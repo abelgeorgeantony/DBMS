@@ -33,13 +33,18 @@ namespace db_struct
         std::vector<table> tables;
     };
 
-    namespace create
+    namespace structure_creating_functions
     {
         bool db(const fs::path &, std::string);
-        bool dbmetafile(const fs::path &);
+
         bool table(const fs::path &, std::string);
-        bool tablemetafile(const fs::path &);
+
         bool column(const fs::path &, std::string);
-        bool columnmetafile(const fs::path &);
+    }
+    namespace structure_buildchecking_functions
+    {
+        bool db(const fs::path &, std::string);
+        bool table(const fs::path &, std::string);
+        bool column(const fs::path &, std::string);
     }
 }

@@ -1,9 +1,9 @@
 #include <iostream>
 #include <filesystem>
-#include "headers/db_structure.h"
+#include "headers/db_structures.h"
 
 namespace fs = std::filesystem;
-namespace dbc = db_struct::create;
+namespace create = db_struct::structure_creating_functions;
 
 enum tokentypes
 {
@@ -20,11 +20,11 @@ struct token
 
 std::string Keywords[] = {"CREATE", "SELECT", "UPDATE", "DELETE"};
 
-void parseSQL(std::string &, std::vector<token> &);
+void divideSQL(std::string &, std::vector<token> &);
 bool executeSQL(std::vector<token> &);
 void assign_tokentype(token &);
 
-std::vector<token> parsedSQL;
+std::vector<token> dividedSQL;
 
 int main()
 {
@@ -32,47 +32,24 @@ int main()
     std::string db_name = "DB_test";
     std::string table_name = "TABLE_test";
     
-    dbc::db(rootpath, db_name);
-    dbc::table(rootpath/db_name,table_name);
-    dbc::column(rootpath/db_name/table_name,"column1");
-    dbc::column(rootpath/db_name/table_name,"column2");
-    dbc::column(rootpath/db_name/table_name,"column3");
+    create::db(rootpath, db_name);
+    create::table(rootpath/db_name,table_name);
+    create::column(rootpath/db_name/table_name,"column1");
+    create::column(rootpath/db_name/table_name,"column2");
+    create::column(rootpath/db_name/table_name,"column3");
     return(0);
 
     std::cout << "Enter SQL:\n";
     std::string SQLin;
     std::getline(std::cin, SQLin);
-    parseSQL(SQLin, parsedSQL);
-    std::cout << parsedSQL[0].value << "\n";
-    std::cout << parsedSQL[1].value << "\n";
-    std::cout << parsedSQL[2].value << "\n";
-    return (0);
-    if (executeSQL(parsedSQL))
-    {
-        std::cout << "SQL sent to execute\n";
-    }
-    else
-    {
-        std::cout << "SQL NOT sent to execute. SQL doesn't have logic\n";
-    }
-    return (0);
-    //dbc::db(rootpath, db_name);
+    divideSQL(SQLin, dividedSQL);
+    std::cout << dividedSQL[0].value << "\n";
+    std::cout << dividedSQL[1].value << "\n";
+    std::cout << dividedSQL[2].value << "\n";
     return (0);
 }
 
-bool executeSQL(std::vector<token> &parsedSQL)
-{
-    if (parsedSQL[0].value == "create" || parsedSQL[0].value == "CREATE")
-    {
-        if (parsedSQL[1].value == "db" || parsedSQL[1].value == "DB")
-        {
-            ;
-        }
-    }
-    return false;
-}
-
-void parseSQL(std::string &SQL, std::vector<token> &parse_storage)
+void divideSQL(std::string &SQL, std::vector<token> &parse_storage)
 {
     int sql_len = SQL.length();
     int sql_i = 0;
